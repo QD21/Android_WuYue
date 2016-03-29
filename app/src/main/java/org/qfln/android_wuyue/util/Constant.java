@@ -14,6 +14,8 @@ public interface Constant {
     interface URL{
         String SELECT_LISTURL="http://api.liwushuo.com/v2/channels/104/items?limit=%d&ad=2&gender=2&offset=0&generation=1";
         String NEXT_UR="http://api.liwushuo.com/v2/channels/104/items?generation=1&gender=2&limit=10&ad=2&offset=%d";
+        String HOMEVP_URL="http://api.liwushuo.com/v2/banners";
+        String HOMEHEAD2_URL="http://api.liwushuo.com/v2/secondary_banners?gender=2&generation=1";
     }
 
     interface KEYS{
