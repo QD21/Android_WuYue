@@ -7,13 +7,14 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.adapter.RecyclerAdapter;
 import org.qfln.android_wuyue.bean.HomeHead2Entity;
 import org.qfln.android_wuyue.util.Constant;
-import org.qfln.android_wuyue.util.DownUtil;
+import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.util.List;
 
@@ -48,20 +49,23 @@ public class HomeHead2 extends LinearLayout {
 
 
     public void setData(String data) {
-        this.url = data;
-        DownUtil.downJson(data, new DownUtil.OnDownListener() {
+        this.url =data ;
+
+        VolleyUtil.requestString(data, new VolleyUtil.OnRequestListener() {
             @Override
-            public void downSuccess(String path, Object obj) {
-                if (obj != null) {
-                    HomeHead2Entity entity = new Gson().fromJson(obj.toString(), HomeHead2Entity.class);
+            public void onResponse(String url, String response) {
+                if (response != null) {
+                    HomeHead2Entity entity = new Gson().fromJson(response.toString(), HomeHead2Entity.class);
                     HomeHead2Entity.DataEntity data1 = entity.getData();
                     List<HomeHead2Entity.DataEntity.SecondaryBannersEntity> secondary_banners = data1.getSecondary_banners();
                     recyclerAdapter.setDatas(secondary_banners);
                     //设置适配器
                     recycler.setAdapter(recyclerAdapter);
-
                 }
+            }
 
+            @Override
+            public void onErrorResponse(String url, VolleyError error) {
             }
         });
     }

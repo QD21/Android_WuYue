@@ -12,10 +12,16 @@ public interface Constant {
     }
 
     interface URL{
+        //精选listView
         String SELECT_LISTURL="http://api.liwushuo.com/v2/channels/104/items?limit=%d&ad=2&gender=2&offset=0&generation=1";
+        // 精选listView加载更多
         String NEXT_UR="http://api.liwushuo.com/v2/channels/104/items?generation=1&gender=2&limit=10&ad=2&offset=%d";
+        //精选ViewPager
         String HOMEVP_URL="http://api.liwushuo.com/v2/banners";
+        //头部视图2
         String HOMEHEAD2_URL="http://api.liwushuo.com/v2/secondary_banners?gender=2&generation=1";
+        //ViewPager的item详情
+        String VPITEM_URL="http://api.liwushuo.com/v2/collections/%d/posts?limit=20&offset=0";
     }
 
     interface KEYS{

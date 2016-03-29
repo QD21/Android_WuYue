@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="140dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_head"
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
- <!--导航控件-->
+        android:layout_height="160dp"
+        app:canLoop="true"
+    />
+<!--
+ &lt;!&ndash;导航控件&ndash;&gt;
     <org.qfln.android_wuyue.custom.NavView
         android:id="@+id/nv"
         android:layout_width="wrap_content"
@@ -17,6 +20,6 @@
         android:layout_gravity="bottom|center"
         android:layout_margin="12dp"
         app:checkedimg="@mipmap/checked"
-        app:uncheckedimg="@mipmap/unchecked"/>
+        app:uncheckedimg="@mipmap/unchecked"/>-->
     
-</FrameLayout>
+</LinearLayout>

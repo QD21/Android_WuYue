@@ -3,7 +3,9 @@ package org.qfln.android_wuyue.fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 
@@ -17,6 +19,7 @@ import org.qfln.android_wuyue.pulltorefresh.PullToRefreshBase;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.DownUtil;
+import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.util.List;
 
@@ -28,7 +31,6 @@ import java.util.List;
  */
 public class HomeSelectFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener, PullToRefreshBase.OnLastItemVisibleListener{
     private PullToRefreshListView pToRefreshListView;
-    private boolean isBottom=false;
     private int limt=10;
     private ListView lv;
 
@@ -51,7 +53,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
      */
     @Override
     protected void init(View view) {
-        HomeHeadVp headVp=new HomeHeadVp(getActivity(),getChildFragmentManager());
+        HomeHeadVp headVp=new HomeHeadVp(getActivity());
         HomeHead2 homehead2=new HomeHead2(getActivity());
         pToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.ptrflv);
         lv = pToRefreshListView.getRefreshableView();
@@ -59,9 +61,10 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
         lv.addHeaderView(headVp);//添加头部视图1
         lv.addHeaderView(homehead2);//添加头部视图2
         pToRefreshListView.setOnRefreshListener(this);
-        pToRefreshListView.onRefreshComplete();
+
         pToRefreshListView.setOnLastItemVisibleListener(this);
     }
+
 
     /**
      * 加载数据
@@ -72,11 +75,13 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
         String SELECT_LISTURL = String.format(Constant.URL.SELECT_LISTURL, 10);
 //        L.d("url="+SELECT_LISTURL);
         //进行Json下载
-        DownUtil.downJson(SELECT_LISTURL, new DownUtil.OnDownListener() {
+        VolleyUtil.requestString(SELECT_LISTURL, new VolleyUtil.OnRequestListener() {
             @Override
-            public void downSuccess(String path, Object obj) {
-                if(obj!=null) {
-                    SelectListEntity selectEntity = new Gson().fromJson(obj.toString(), SelectListEntity.class);
+            public void onResponse(String url, String response) {
+                pToRefreshListView.onRefreshComplete();
+                Toast.makeText(getActivity(),"刷新完成",Toast.LENGTH_SHORT).show();
+                if(response!=null) {
+                    SelectListEntity selectEntity = new Gson().fromJson(response.toString(), SelectListEntity.class);
                     final SelectListEntity.DataEntity data = selectEntity.getData();
                     List<SelectListEntity.DataEntity.ItemsEntity> items = data.getItems();
 //                    L.i("ijij"+items);
@@ -85,16 +90,27 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
                     lv.setAdapter(selectAdapter);// 设置适配器
                 }
             }
+
+            @Override
+            public void onErrorResponse(String url, VolleyError error) {
+
+            }
         });
+
 
     }
 
-
+    /**
+     * 下拉刷新的方法
+     */
     @Override
     public void onRefresh() {
         loadData();
     }
 
+    /**
+     * 分页加载的方法
+     */
     @Override
     public void onLastItemVisible() {
         limt += 10;

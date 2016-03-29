@@ -91,7 +91,7 @@ public class HomeVPEntity {
              */
 
             private TargetEntity target;
-            private int target_id;
+            private String target_id;
             private String target_url;
             private String type;
             private String webp_url;
@@ -121,7 +121,7 @@ public class HomeVPEntity {
                 this.target = target;
             }
 
-            public void setTarget_id(int target_id) {
+            public void setTarget_id(String target_id) {
                 this.target_id = target_id;
             }
 
@@ -165,7 +165,7 @@ public class HomeVPEntity {
                 return target;
             }
 
-            public int getTarget_id() {
+            public String getTarget_id() {
                 return target_id;
             }
 
