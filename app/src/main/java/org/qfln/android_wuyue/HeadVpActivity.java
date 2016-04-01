@@ -1,6 +1,8 @@
 package org.qfln.android_wuyue;
 
 import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ public class HeadVpActivity extends BaseActivity{
     private TextView tvtitle;
     private PullToRefreshListView pullToRefresh;
     private ListView listView;
+    private List<HomeHeadVpItem.DataEntity.PostsEntity> posts;
 
     @Override
     protected int getContentResId() {
@@ -40,13 +43,24 @@ public class HeadVpActivity extends BaseActivity{
         tvtitle = (TextView) findViewById(R.id.tv_title1);
         pullToRefresh = (PullToRefreshListView) findViewById(R.id.pull_lv);
         listView = pullToRefresh.getRefreshableView();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(HeadVpActivity.this,WebXQActivity.class);
+//                intent.putExtra("Cover_webp_url",posts.get(position).getCover_webp_url());
+//                intent.putExtra("Title",posts.get(position).getTitle());
+                // webview的url
+                intent.putExtra("Content_url",posts.get(position).getContent_url());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void loadData() {
         Intent intent = getIntent();
+        // 获取Vp每个条目的id
         int id = intent.getIntExtra("vpitem_id",0);
-//        L.w("id="+id);
         String vpitem_title = intent.getStringExtra("vpitem_title");
         tvtitle.setText(vpitem_title);
         String VPITEM_URL1=String.format(vpitem_url,id);
@@ -57,7 +71,7 @@ public class HeadVpActivity extends BaseActivity{
                 if(response!=null){
                     HomeHeadVpItem vpItem=new Gson().fromJson(response.toString(), HomeHeadVpItem.class);
                     HomeHeadVpItem.DataEntity data = vpItem.getData();
-                    List<HomeHeadVpItem.DataEntity.PostsEntity> posts = data.getPosts();
+                    posts = data.getPosts();
 
                     VpItemAdapter itemAdapter=new VpItemAdapter(HeadVpActivity.this);
                     itemAdapter.setDatas(posts);
@@ -73,4 +87,14 @@ public class HeadVpActivity extends BaseActivity{
         });
     }
 
+
+    public void onclick(View v){
+        switch (v.getId()){
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.iv_share:
+                break;
+        }
+    }
 }

@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".HeadVpActivity"/>
+        <activity android:name=".WebXQActivity"/>
     </application>
+
 
 </manifest>

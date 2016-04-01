@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="160dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.bigkoo.convenientbanner.ConvenientBanner
@@ -11,15 +11,6 @@
         android:layout_height="160dp"
         app:canLoop="true"
     />
-<!--
- &lt;!&ndash;导航控件&ndash;&gt;
-    <org.qfln.android_wuyue.custom.NavView
-        android:id="@+id/nv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="12dp"
-        app:checkedimg="@mipmap/checked"
-        app:uncheckedimg="@mipmap/unchecked"/>-->
+
     
 </LinearLayout>
