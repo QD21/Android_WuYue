@@ -63,16 +63,16 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
         int id = bundle.getInt("id",0);
         tabid_url = String.format(Constant.URL.TAB_ID,id);
 //        L.d("---"+ tabid_url);
-        loaddata();// 加载数据方法
+        loaddata(tabid_url);// 加载数据方法
     }
 
-    private void loaddata() {
+    private void loaddata(String url) {
         VolleyUtil.requestString(tabid_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                pullToRefreshListView.onRefreshComplete();
+                Toast.makeText(getActivity(),"刷新完成",Toast.LENGTH_SHORT).show();
                 if(response!=null){
-                    pullToRefreshListView.onRefreshComplete();
-                    Toast.makeText(getActivity(),"刷新完成",Toast.LENGTH_SHORT).show();
                     HomeContentEntity contentEntity=new Gson().fromJson(response.toString(),HomeContentEntity.class);
                     data = contentEntity.getData();
                     List<HomeContentEntity.DataEntity.ItemsEntity> items = data.getItems();
@@ -86,7 +86,7 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-                Toast.makeText(getActivity(), "数据加载失败...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -117,7 +117,7 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
     }

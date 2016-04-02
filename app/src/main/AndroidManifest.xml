@@ -5,20 +5,21 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
-        android:name=".AppContext"
+        android:name=".activity.AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name="org.qfln.android_wuyue.MainActivity" >
+        <activity android:name=".activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HeadVpActivity"/>
-        <activity android:name=".WebXQActivity"/>
+        <activity android:name=".activity.HeadVpActivity"/>
+        <activity android:name=".activity.WebXQActivity"/>
+        <activity android:name=".activity.SearchActivity"/>
     </application>
 
 

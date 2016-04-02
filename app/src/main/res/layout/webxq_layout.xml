@@ -23,7 +23,7 @@
             android:layout_marginLeft="8dp"
             android:onClick="click"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_act_back" />
+            android:src="@mipmap/ic_ac_back" />
 
         <TextView
             android:id="@+id/tv_title1"

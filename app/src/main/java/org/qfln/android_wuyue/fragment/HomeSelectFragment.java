@@ -113,7 +113,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
         String time_url=Constant.URL.TIME_URL;
@@ -154,7 +154,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-
+//                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -214,7 +214,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
     }

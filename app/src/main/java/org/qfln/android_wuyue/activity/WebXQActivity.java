@@ -1,4 +1,4 @@
-package org.qfln.android_wuyue;
+package org.qfln.android_wuyue.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseActivity;
 
 /**

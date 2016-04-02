@@ -27,7 +27,10 @@ public interface Constant {
         //ViewPager的item详情
         String VPITEM_URL="http://api.liwushuo.com/v2/collections/%d/posts?limit=20&offset=0";
         String TIME_URL="http://api.liwushuo.com/v2/content_schedules?gender=2&generation=1";
-
+        /**
+         * 热门
+         */
+        String HOTLIST_URL="http://api.liwushuo.com/v2/items?limit=%d&offset=0&gender=2&generation=1";
     }
 
     interface KEYS{

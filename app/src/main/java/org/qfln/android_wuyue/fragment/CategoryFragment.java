@@ -1,5 +1,6 @@
 package org.qfln.android_wuyue.fragment;
 
+import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseFragment;
 
 /**
@@ -11,7 +12,7 @@ import org.qfln.android_wuyue.base.BaseFragment;
 public class CategoryFragment extends BaseFragment{
     @Override
     protected int getLayoutResId() {
-        return 0;
+        return R.layout.category_layout;
     }
     public static CategoryFragment newInstance(){
         CategoryFragment categoryFragment=new CategoryFragment();

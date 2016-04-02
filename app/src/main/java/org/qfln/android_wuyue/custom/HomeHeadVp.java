@@ -15,7 +15,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 
-import org.qfln.android_wuyue.HeadVpActivity;
+import org.qfln.android_wuyue.activity.HeadVpActivity;
 import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.bean.HomeVPEntity;
 import org.qfln.android_wuyue.util.Constant;

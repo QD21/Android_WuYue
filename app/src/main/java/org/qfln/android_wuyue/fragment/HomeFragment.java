@@ -1,21 +1,24 @@
 package org.qfln.android_wuyue.fragment;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 
 import org.qfln.android_wuyue.R;
+import org.qfln.android_wuyue.activity.SearchActivity;
 import org.qfln.android_wuyue.base.BaseFragment;
 import org.qfln.android_wuyue.bean.TabEntity;
 import org.qfln.android_wuyue.util.Constant;
-import org.qfln.android_wuyue.util.L;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ import java.util.List;
  * @备注：
  */
 public class HomeFragment extends BaseFragment {
-
+    private ImageView ivSearch;
     private String tabUrl = Constant.URL.TAB_URL;
     private TabLayout tabLayout;
     private ViewPager mvp;
@@ -50,6 +53,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void init(View view) {
+        ivSearch = (ImageView) view.findViewById(R.id.iv_search);
+
         tabLayout = (TabLayout) view.findViewById(R.id.tab);
         mvp = (ViewPager) view.findViewById(R.id.vp);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -87,7 +92,17 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-                L.d("出错");
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //ivSearch的点击事件
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),SearchActivity.class);
+                startActivity(intent);
             }
         });
     }

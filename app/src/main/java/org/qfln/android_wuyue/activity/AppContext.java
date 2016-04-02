@@ -1,4 +1,4 @@
-package org.qfln.android_wuyue;
+package org.qfln.android_wuyue.activity;
 
 import android.app.Application;
 

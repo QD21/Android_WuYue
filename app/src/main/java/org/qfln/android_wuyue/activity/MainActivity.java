@@ -1,10 +1,11 @@
-package org.qfln.android_wuyue;
+package org.qfln.android_wuyue.activity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioGroup;
 
+import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.fragment.CategoryFragment;
 import org.qfln.android_wuyue.fragment.HomeFragment;

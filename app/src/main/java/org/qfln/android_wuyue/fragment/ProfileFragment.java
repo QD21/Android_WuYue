@@ -1,5 +1,6 @@
 package org.qfln.android_wuyue.fragment;
 
+import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseFragment;
 
 /**
@@ -9,12 +10,15 @@ import org.qfln.android_wuyue.base.BaseFragment;
  * @备注：
  */
 public class ProfileFragment extends BaseFragment{
-    @Override
-    protected int getLayoutResId() {
-        return 0;
-    }
+
     public static ProfileFragment newInstance(){
         ProfileFragment profileFragment=new ProfileFragment();
         return profileFragment;
     }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.profile_layout;
+    }
+
 }

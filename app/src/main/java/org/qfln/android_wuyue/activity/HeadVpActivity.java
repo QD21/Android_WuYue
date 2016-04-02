@@ -1,18 +1,21 @@
-package org.qfln.android_wuyue;
+package org.qfln.android_wuyue.activity;
 
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 
+import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.adapter.VpItemAdapter;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.bean.HomeHeadVpItem;
+import org.qfln.android_wuyue.pulltorefresh.PullToRefreshBase;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.VolleyUtil;
@@ -54,6 +57,14 @@ public class HeadVpActivity extends BaseActivity{
                 startActivity(intent);
             }
         });
+        // 刷新界面
+        pullToRefresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+            }
+        });
+
     }
 
     @Override
@@ -68,6 +79,8 @@ public class HeadVpActivity extends BaseActivity{
         VolleyUtil.requestString(VPITEM_URL1, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                pullToRefresh.onRefreshComplete();
+                Toast.makeText(HeadVpActivity.this, "刷新完成", Toast.LENGTH_SHORT).show();
                 if(response!=null){
                     HomeHeadVpItem vpItem=new Gson().fromJson(response.toString(), HomeHeadVpItem.class);
                     HomeHeadVpItem.DataEntity data = vpItem.getData();
