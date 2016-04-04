@@ -1,53 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
 
-    <RelativeLayout
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:background="@mipmap/bg_profile">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="#fcfbfb">
 
-        <RelativeLayout
+
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/iv_my_setting"
+            android:fitsSystemWindows="true"
+            app:contentScrim="#e11d15"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:background="@mipmap/bg_profile">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_my_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/me_settings" />
+
+                    <ImageView
+                        android:id="@+id/iv_my_sao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_scan" />
+                </RelativeLayout>
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_my_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    fresco:backgroundImage="@mipmap/me_avatar_girl" />
+                <!--fresco:roundAsCircle="true"-->
+                <!--fresco:roundingBorderColor="#fafafa"-->
+                <!--fresco:roundingBorderWidth="2dp"/>-->
+                <TextView
+                    android:id="@+id/tv_my_name1"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_my_logo"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="234"
+                    android:textColor="#504f4f" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                app:layout_collapseMode="pin">
+
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center_horizontal">-->
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_margin="20dp"
-                android:src="@mipmap/me_settings"/>
-            <ImageView
-                android:id="@+id/iv_my_sao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:src="@mipmap/icon_scan"/>
-        </RelativeLayout>
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_my_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            fresco:backgroundImage="@mipmap/me_avatar_girl"/>
-            <!--fresco:roundAsCircle="true"-->
-            <!--fresco:roundingBorderColor="#fafafa"-->
-            <!--fresco:roundingBorderWidth="2dp"/>-->
-        <TextView
-            android:id="@+id/tv_my_name1"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_my_logo"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:layout_marginTop="10dp"
-            android:textColor="#504f4f"
-            android:text="234"/>
-    </RelativeLayout>
-</LinearLayout>
+                android:layout_gravity="bottom"
+                />
+        <!--</LinearLayout>-->
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/my_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab_view_news"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|end"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:visibility="invisible"-->
+    <!--android:src="@android:drawable/ic_menu_share" />-->
+
+</android.support.design.widget.CoordinatorLayout>

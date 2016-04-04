@@ -12,6 +12,9 @@ public interface Constant {
     }
 
     interface URL{
+        /**
+         * 首页
+         */
         //首页中的tablayout
         String TAB_URL="http://api.liwushuo.com/v2/channels/preset?gender=2&generation=2";
         // 首页中tablayout中listView
@@ -30,7 +33,16 @@ public interface Constant {
         /**
          * 热门
          */
+
         String HOTLIST_URL="http://api.liwushuo.com/v2/items?limit=%d&offset=0&gender=2&generation=1";
+        /**
+         * 分类
+         */
+        String CATEGORY_URL="http://api.liwushuo.com/v2/item_categories/tree";
+        //详情页
+        String GRIDXQ_URL="http://api.liwushuo.com/v2/item_subcategories/%d/items?limit=20&offset=0";
+        //详情的详情页
+        String GRIDXQXQ_URL="http://api.liwushuo.com/v2/items/%d";
     }
 
     interface KEYS{

@@ -20,6 +20,8 @@
         <activity android:name=".activity.HeadVpActivity"/>
         <activity android:name=".activity.WebXQActivity"/>
         <activity android:name=".activity.SearchActivity"/>
+        <activity android:name=".activity.GridxqActivity"/>
+        <activity android:name=".activity.GridActivity"/>
     </application>
 
 
