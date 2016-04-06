@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="#f4f1f1">
+<EditText
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white"
+    android:hint="我也说几句"
+    android:layout_margin="5dp"
+    android:padding="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="发送"
+        android:padding="5dp"
+        />
+</LinearLayout>

@@ -27,7 +27,8 @@
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="福利大放送"/>
 
         <ImageView
             android:id="@+id/iv_share"
@@ -38,12 +39,9 @@
             android:onClick="onclick"
             android:src="@mipmap/ic_menu_share" />
     </LinearLayout>
-    <org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView
-        android:id="@+id/pull_lv"
+
+    <WebView
+        android:id="@+id/web_guajiang"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:divider="@null"/>
-
-
+        android:layout_height="match_parent"/>
 </LinearLayout>

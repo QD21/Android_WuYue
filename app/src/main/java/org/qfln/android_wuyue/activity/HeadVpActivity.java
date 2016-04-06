@@ -43,17 +43,15 @@ public class HeadVpActivity extends BaseActivity{
 
     @Override
     protected void initView() {
-        tvtitle = (TextView) findViewById(R.id.tv_title1);
+        tvtitle = (TextView) findViewById(R.id.tv_title2);
         pullToRefresh = (PullToRefreshListView) findViewById(R.id.pull_lv);
         listView = pullToRefresh.getRefreshableView();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(HeadVpActivity.this,WebXQActivity.class);
-//                intent.putExtra("Cover_webp_url",posts.get(position).getCover_webp_url());
-//                intent.putExtra("Title",posts.get(position).getTitle());
                 // webview的url
-                intent.putExtra("Content_url",posts.get(position).getContent_url());
+                intent.putExtra("item_id",posts.get(position).getId());
                 startActivity(intent);
             }
         });

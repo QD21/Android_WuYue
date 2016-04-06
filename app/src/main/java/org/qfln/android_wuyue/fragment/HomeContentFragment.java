@@ -62,7 +62,6 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
     protected void getDatas(Bundle bundle) {
         int id = bundle.getInt("id",0);
         tabid_url = String.format(Constant.URL.TAB_ID,id);
-//        L.d("---"+ tabid_url);
         loaddata(tabid_url);// 加载数据方法
     }
 

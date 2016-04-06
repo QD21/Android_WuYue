@@ -8,9 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +30,6 @@ import org.qfln.android_wuyue.bean.CateXQEntity;
 import org.qfln.android_wuyue.fragment.CateCommitFragment;
 import org.qfln.android_wuyue.fragment.TuWenFragment;
 import org.qfln.android_wuyue.util.Constant;
-import org.qfln.android_wuyue.util.L;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.util.List;
@@ -41,10 +40,11 @@ import java.util.List;
  * @创建时间: 2016/4/3 23:51
  * @备注：
  */
-public class GridActivity extends BaseActivity {
+public class GridActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvCate_xqTitle,tvCate_xqprice,tvCate_xqContent;
+    private TextView tvCate_xqQtb;
     private TabLayout tabLayout;
-    private Toolbar toolbar;
+    private ImageView ivxqBack,ivxqShare;
     private ViewPager vpBottom;
     private ConvenientBanner convenientBanner;
     private VPBottomAdapter vpAdapter;
@@ -60,8 +60,9 @@ public class GridActivity extends BaseActivity {
         tvCate_xqTitle = (TextView) findViewById(R.id.tv_cate_xqtitle);
         tvCate_xqprice = (TextView) findViewById(R.id.tv_cate_xqprice);
         tvCate_xqContent = (TextView) findViewById(R.id.tv_cate_xqcontent);
+        tvCate_xqQtb = (TextView) findViewById(R.id.tv_cate_xq_qtb);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         //viewpager
         convenientBanner = (ConvenientBanner) findViewById(R.id.cb_grid_xqtop);
         vpBottom = (ViewPager) findViewById(R.id.vp_grid_xq);
@@ -73,18 +74,24 @@ public class GridActivity extends BaseActivity {
         layoutParams.width = screenW;
         tabLayout.setLayoutParams(layoutParams);
 
+        // 返回 、分享
+        ivxqBack = (ImageView) findViewById(R.id.iv_cata_xqback);
+        ivxqShare = (ImageView) findViewById(R.id.iv_cata_xqshare);
+        ivxqBack.setOnClickListener(this);
+        ivxqShare.setOnClickListener(this);
+
     }
 
     // 放置ViewPager图片的Viewhold
     public class LocalImageHolderView implements Holder<String> {
-        private SimpleDraweeView sdv_vp;
 
+        private SimpleDraweeView sdv_vp;
         @Override
         public View createView(Context context) {
             sdv_vp = new SimpleDraweeView(context);
             sdv_vp.setScaleType(SimpleDraweeView.ScaleType.FIT_XY);
             GenericDraweeHierarchy hierarchy = sdv_vp.getHierarchy();
-            hierarchy.setPlaceholderImage(R.drawable.bg_big);// 修改占位图
+            hierarchy.setPlaceholderImage(R.drawable.bg_big1);// 修改占位图
             return sdv_vp;
         }
 
@@ -92,8 +99,8 @@ public class GridActivity extends BaseActivity {
         public void UpdateUI(Context context, int position, String img_url) {
             sdv_vp.setImageURI(Uri.parse(img_url));
         }
-    }
 
+    }
     @Override
     protected void loadData() {
         Intent intent = getIntent();
@@ -125,12 +132,22 @@ public class GridActivity extends BaseActivity {
 
     private void setTextView(CateXQEntity.DataEntity data) {
         String name = data.getName();
-        L.d(name);
+//        L.d(name);
         tvCate_xqTitle.setText(name);
         String price = data.getPrice();
         tvCate_xqprice.setText(price);
         String description = data.getDescription();
         tvCate_xqContent.setText(description);
+        final String purchase_id = data.getPurchase_id();
+//        final String purchase_url = data.getPurchase_url();
+        tvCate_xqQtb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(GridActivity.this,TaobaoActivity.class);
+                intent.putExtra("purchase_id",purchase_id);
+                startActivity(intent);
+            }
+        });
     }
 
     //自动轮播Viewpager
@@ -156,19 +173,21 @@ public class GridActivity extends BaseActivity {
      * Viewpager适配器
      */
     class VPBottomAdapter extends FragmentPagerAdapter {
+
         private String[] tabName=new String[]{"图文介绍","评论"};
         private CateXQEntity.DataEntity mdata;
+
         public VPBottomAdapter(FragmentManager fm,CateXQEntity.DataEntity data) {
             super(fm);
             this.mdata=data;
         }
-
         @Override
         public Fragment getItem(int position) {
             if(position==0){
                 return TuWenFragment.newInstance(mdata);
             }else {
-                return CateCommitFragment.newInstance(tabName[1]);
+                int id = mdata.getId();
+                return CateCommitFragment.newInstance(id);
             }
 
         }
@@ -181,6 +200,21 @@ public class GridActivity extends BaseActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return tabName[position];
+        }
+
+    }
+
+    /**
+     * 返回、分享
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_cata_xqback:
+                finish();
+                break;
+            case R.id.iv_cata_xqshare:
+                break;
         }
     }
 

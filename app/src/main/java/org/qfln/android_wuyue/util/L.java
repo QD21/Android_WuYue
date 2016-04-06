@@ -30,22 +30,22 @@ public class L {
     }
     public static void d(String str){
         if(OUT_STATE<=VERBOSE){
-            Log.v(TAG,str);
+            Log.d(TAG,str);
         }
     }
     public static void i(String str){
         if(OUT_STATE<=VERBOSE){
-            Log.v(TAG,str);
+            Log.i(TAG,str);
         }
     }
     public static void w(String str){
         if(OUT_STATE<=VERBOSE){
-            Log.v(TAG,str);
+            Log.w(TAG,str);
         }
     }
     public static void e(String str){
         if(OUT_STATE<=VERBOSE){
-            Log.v(TAG,str);
+            Log.e(TAG,str);
         }
     }
     public static void v(String tag, String str){

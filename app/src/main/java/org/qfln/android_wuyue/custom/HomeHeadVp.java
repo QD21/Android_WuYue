@@ -75,7 +75,7 @@ public class HomeHeadVp extends FrameLayout {
             sdv_vp = new SimpleDraweeView(context);
             sdv_vp.setScaleType(SimpleDraweeView.ScaleType.FIT_XY);
             GenericDraweeHierarchy hierarchy = sdv_vp.getHierarchy();
-            hierarchy.setPlaceholderImage(R.drawable.bg_big);// 修改占位图
+            hierarchy.setPlaceholderImage(R.drawable.bg_big1);// 修改占位图
 //            sdv_vp.setPadding(10,0,10,10);//设置边距
 //            RoundingParams roundingParams = hierarchy.getRoundingParams();
 //            roundingParams.setCornersRadius(5);//设置圆角

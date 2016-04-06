@@ -22,6 +22,8 @@
         <activity android:name=".activity.SearchActivity"/>
         <activity android:name=".activity.GridxqActivity"/>
         <activity android:name=".activity.GridActivity"/>
+        <activity android:name=".activity.TaobaoActivity"/>
+        <activity android:name=".activity.HeadTianActivity"/>
     </application>
 
 

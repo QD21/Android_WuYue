@@ -3,6 +3,7 @@ package org.qfln.android_wuyue.fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -57,6 +58,7 @@ public class GiftCollectFragment extends BaseFragment{
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
+                Toast.makeText(getActivity(), "数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
 

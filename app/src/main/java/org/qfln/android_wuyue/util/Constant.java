@@ -25,11 +25,15 @@ public interface Constant {
         String NEXT_UR="http://api.liwushuo.com/v2/channels/104/items?generation=1&gender=2&limit=10&ad=2&offset=%d";
         //精选ViewPager
         String HOMEVP_URL="http://api.liwushuo.com/v2/banners";
-        //头部视图2
+        //精选ViewPager的详情   http://api.liwushuo.com/v2/posts_v2/1039727
+        String VPXQ_URL="http://api.liwushuo.com/v2/posts_v2/%d";
+        //头部视图2 天天
         String HOMEHEAD2_URL="http://api.liwushuo.com/v2/secondary_banners?gender=2&generation=1";
         //ViewPager的item详情
         String VPITEM_URL="http://api.liwushuo.com/v2/collections/%d/posts?limit=20&offset=0";
         String TIME_URL="http://api.liwushuo.com/v2/content_schedules?gender=2&generation=1";
+        //天天刮奖
+        String TIAN_URL="https://event.liwushuo.com/topics/daily-lucky";
         /**
          * 热门
          */
@@ -43,6 +47,11 @@ public interface Constant {
         String GRIDXQ_URL="http://api.liwushuo.com/v2/item_subcategories/%d/items?limit=20&offset=0";
         //详情的详情页
         String GRIDXQXQ_URL="http://api.liwushuo.com/v2/items/%d";
+        //http://api.liwushuo.com/v2/items/1020470
+        //评论
+        String COMMIT_URL="http://api.liwushuo.com/v2/items/%d/comments?limit=20&offset=0";
+        // 淘宝
+        String TAOBAO_URL="http://h5.m.taobao.com/awp/core/detail.htm?id=%s&ali_trackid=2:mm_56503797_8596089_29498842:1459743296_253_646655584&sche=liwushuo&e=nywLq91vfzdw4vFB6t2Z2ueEDrYVVa64XoO8tOebS-dRAdhuF14FMSp8EgNNE5bblovu_CElQOutgmtnxDX9deVMA5qBABUs5mPg1WiM1P5OS0OzHKBZzQIomwaXGXUs78FqzS29vh5nPjZ5WWqolN_WWjML5JdM90WyHry0om2fzLsiumGGcyMZBvEAC8NMNcOghYQxuYLlNcSfHYgp4nF1-iobYkE-cUCbdqctVKinTITuRA60antbXDwud7WxGA-Ks2EAErVS95Z3pVuETDA-ufTRDA3b&type=2&tkFlag=0";
     }
 
     interface KEYS{

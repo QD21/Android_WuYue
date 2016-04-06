@@ -32,6 +32,7 @@ public class TuWenFragment extends BaseFragment {
     public static TuWenFragment newInstance(CateXQEntity.DataEntity mdata) {
         TuWenFragment tuwenFragment = new TuWenFragment();
         Bundle bundle = new Bundle();
+//        L.d("    sss"+mdata.getDetail_html());
         bundle.putSerializable("detail_html", mdata.getDetail_html());
         tuwenFragment.setArguments(bundle);
         return tuwenFragment;
@@ -46,16 +47,18 @@ public class TuWenFragment extends BaseFragment {
     protected void getDatas(Bundle bundle) {
 
         String detail_html = (String) bundle.getSerializable("detail_html");
+//        L.e(detail_html+"------------------------");
         // String 转换成 byte
         byte[] buffer = detail_html.getBytes();
         try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File("/sdcard/wuyue/web.html")));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File("/sdcard/web.html")));
             bos.write(buffer, 0, buffer.length);
+            bos.flush();
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mWeb.loadUrl("file://com.android.htmlfileprovider/sdcard/wuyue/web.html");
+        mWeb.loadUrl("file://org.qfln.android_wuyue/sdcard/web.html");
         mWeb.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){
