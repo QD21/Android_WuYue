@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
+    android:layout_height="match_parent">
 
     <org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView
         android:id="@+id/ptrflv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        />
+        android:divider="@null" />
 
+    <ImageView
+        android:id="@+id/iv_nonet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/nonet"
+        android:visibility="gone" />
 </RelativeLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="#88dfdcdc">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
@@ -17,30 +17,42 @@
             android:layout_marginLeft="10dp"
             android:onClick="click"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_ac_back" />
+            android:src="@mipmap/ic_actr_back" />
 
         <EditText
-            android:id="@+id/tv_title1"
+            android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:paddingLeft="15dp"
             android:layout_weight="1"
+            android:drawableLeft="@drawable/search_46"
             android:hint="搜索礼物，攻略"
-            android:textColor="#fff"
-            android:textSize="18sp"
-            android:background="@drawable/edittext"/>
+            android:textSize="16sp"
+            android:textColor="#6c6868"
+            android:background="@drawable/bg_white"/>
         <TextView
+            android:id="@+id/tv_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
+            android:layout_margin="6dp"
             android:textColor="#fff"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:text="搜索"/>
     </LinearLayout>
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:gravity="center_vertical"
+    android:textSize="13sp"
+    android:padding="10dp"
+    android:text="大家都在搜"/>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/relv_search"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="#f9f6f6"/>
 
 </LinearLayout>

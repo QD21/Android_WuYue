@@ -1,6 +1,8 @@
 package org.qfln.android_wuyue.fragment;
 
+import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -8,13 +10,13 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.qfln.android_wuyue.R;
+import org.qfln.android_wuyue.activity.SearchActivity;
 import org.qfln.android_wuyue.adapter.HotListAdapter;
 import org.qfln.android_wuyue.base.BaseFragment;
 import org.qfln.android_wuyue.bean.HotListEntity;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshBase;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView;
 import org.qfln.android_wuyue.util.Constant;
-import org.qfln.android_wuyue.util.L;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.util.ArrayList;
@@ -26,13 +28,15 @@ import java.util.List;
  * @创建时间: 2016/3/26 17:20
  * @备注：
  */
-public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLastItemVisibleListener {
+public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLastItemVisibleListener, View.OnClickListener {
     private String hotlist_url= String.format(Constant.URL.HOTLIST_URL,10);
     private PullToRefreshListView pullToRefreshList;
     private ListView mlv;
     private HotListEntity.DataEntity data;
-    List<HotListEntity.DataEntity.ItemsEntity> datas=new ArrayList<>();
+    private List<HotListEntity.DataEntity.ItemsEntity> datas=new ArrayList<>();
     private HotListAdapter hotAdapter;
+    private int offset=10;
+    private ImageView iv_hot_search;
 
     @Override
     protected int getLayoutResId() {
@@ -45,6 +49,8 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
 
     @Override
     protected void init(View view) {
+        iv_hot_search = (ImageView)view.findViewById(R.id.iv_hot_search);
+        iv_hot_search.setOnClickListener(this);
         pullToRefreshList = (PullToRefreshListView)view.findViewById(R.id.hot_pull_lv);
         mlv = pullToRefreshList.getRefreshableView();
         pullToRefreshList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
@@ -84,8 +90,8 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
 
     @Override
     public void onLastItemVisible() {
-        HotListEntity.DataEntity.PagingEntity paging = data.getPaging();
-        String next_url = paging.getNext_url();
+        offset +=10;
+        String next_url = String.format(Constant.URL.HOTJIA_url,offset);
         VolleyUtil.requestString(next_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
@@ -102,5 +108,11 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
                 Toast.makeText(getActivity(), "数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(getContext(), SearchActivity.class);
+        getActivity().startActivity(intent);
     }
 }

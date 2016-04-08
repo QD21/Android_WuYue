@@ -22,7 +22,7 @@ public class StrategyFragment extends BaseFragment{
     protected int getLayoutResId() {
         return R.layout.strategy_layout;
     }
-    public static StrategyFragment newInstance(String title){
+    public static StrategyFragment newInstance(){
         StrategyFragment strategyFragment=new StrategyFragment();
         return strategyFragment;
     }

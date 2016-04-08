@@ -30,6 +30,7 @@ import org.qfln.android_wuyue.bean.CateXQEntity;
 import org.qfln.android_wuyue.fragment.CateCommitFragment;
 import org.qfln.android_wuyue.fragment.TuWenFragment;
 import org.qfln.android_wuyue.util.Constant;
+import org.qfln.android_wuyue.util.ShareUtil;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.util.List;
@@ -48,6 +49,8 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager vpBottom;
     private ConvenientBanner convenientBanner;
     private VPBottomAdapter vpAdapter;
+    private int grid_id;
+    private CateXQEntity.DataEntity data;
 
     @Override
     protected int getContentResId() {
@@ -104,19 +107,19 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void loadData() {
         Intent intent = getIntent();
-        int grid_id = intent.getIntExtra("Grid_id", 0);
+        grid_id = intent.getIntExtra("Grid_id", 0);
         String grid_url = String.format(Constant.URL.GRIDXQXQ_URL, grid_id);
         VolleyUtil.requestString(grid_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
                 if (response!=null) {
                     CateXQEntity cateXQEntity = new Gson().fromJson(response.toString(), CateXQEntity.class);
-                    CateXQEntity.DataEntity data = cateXQEntity.getData();
+                    data = cateXQEntity.getData();
                     setTextView(data);
                     List<String> image_urls = data.getImage_urls();
                     bindConvenientBanner(image_urls);
 
-                    vpAdapter = new VPBottomAdapter(getSupportFragmentManager(),data);
+                    vpAdapter = new VPBottomAdapter(getSupportFragmentManager(), data);
                     vpBottom.setAdapter(vpAdapter);
                     tabLayout.setTabsFromPagerAdapter(vpAdapter);
                     tabLayout.setupWithViewPager(vpBottom);//与vpBottom联动
@@ -214,6 +217,9 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.iv_cata_xqshare:
+                String name = data.getName();
+                String titleUrl=String.format("http://www.liwushuo.com/items/%d",grid_id);
+                ShareUtil.simpleShowShare(this,titleUrl,name);
                 break;
         }
     }

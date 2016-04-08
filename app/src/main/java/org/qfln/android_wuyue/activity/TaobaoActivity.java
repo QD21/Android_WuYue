@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.util.Constant;
+import org.qfln.android_wuyue.util.ShareUtil;
 
 /**
  * @描述：
@@ -21,6 +22,8 @@ import org.qfln.android_wuyue.util.Constant;
 public class TaobaoActivity extends BaseActivity implements View.OnClickListener {
     private ImageView ivBack,ivshare;
     private WebView web;
+    private String taobao_url;
+
     @Override
     protected int getContentResId() {
         return R.layout.taobao_layout;
@@ -38,13 +41,13 @@ public class TaobaoActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void loadData() {
         Intent intent = getIntent();
-        String purchase_id = intent.getStringExtra("purchase_id");
-        String Taobao_url=String.format(Constant.URL.TAOBAO_URL,purchase_id);
+        String purchase_id =  intent.getStringExtra("purchase_id");
+        taobao_url = String.format(Constant.URL.TAOBAO_URL,purchase_id);
 //        L.d(Taobao_url);
         WebSettings settings = web.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
-        web.loadUrl(Taobao_url);
+        web.loadUrl(taobao_url);
         web.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -72,6 +75,7 @@ public class TaobaoActivity extends BaseActivity implements View.OnClickListener
                 finish();
                 break;
             case R.id.iv_taobao_share:
+                ShareUtil.simpleShowShare(this,taobao_url,"宝贝详情");
                 break;
         }
     }

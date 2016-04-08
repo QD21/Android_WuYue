@@ -1,7 +1,11 @@
 package org.qfln.android_wuyue.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,9 +34,13 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
     private PullToRefreshListView pullToRefreshListView;
     private String tabid_url;
     private ListView listView;
+    private View footer;
+    private ImageView ivRefresh;
     private List<HomeContentEntity.DataEntity.ItemsEntity> datas=new ArrayList<>();
     private HomeContentEntity.DataEntity data;
     private HomeContentAdapter contentAdapter;
+    private int id;
+    private int offset=10;
 
     @Override
     protected int getLayoutResId() {
@@ -50,6 +58,15 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
 
     @Override
     protected void init(View view) {
+        footer = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_layout, null);
+        ivRefresh = (ImageView) footer.findViewById(R.id.iv_third_bottom_refresh);
+        footer.findViewById(R.id.ll_footer).setVisibility(View.GONE);
+        /**
+         * 开启动画
+         */
+        Animation animtion = AnimationUtils.loadAnimation(getActivity(), R.anim.foot_rotate);
+        ivRefresh.startAnimation(animtion);
+        //带下拉刷新的listview
         pullToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.pull_content);
         //通过pullToRefreshListView.getRefreshableView()方法获取其内部封装的ListView
         listView = pullToRefreshListView.getRefreshableView();
@@ -60,8 +77,8 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
 
     @Override
     protected void getDatas(Bundle bundle) {
-        int id = bundle.getInt("id",0);
-        tabid_url = String.format(Constant.URL.TAB_ID,id);
+        id = bundle.getInt("id",0);
+        tabid_url = String.format(Constant.URL.TAB_ID, id);
         loaddata(tabid_url);// 加载数据方法
     }
 
@@ -98,10 +115,10 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
 
     @Override
     public void onLastItemVisible() {
-
-        HomeContentEntity.DataEntity.PagingEntity paging = data.getPaging();
-        String next_url = paging.getNext_url();
-//        L.d("90"+next_url);
+        ivRefresh.setVisibility(View.VISIBLE);
+        offset +=10;
+        String next_url = String.format(Constant.URL.TAB_MORE,id,offset);
+//        L.d("90="+next_url);
         VolleyUtil.requestString(next_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {

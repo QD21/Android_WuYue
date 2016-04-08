@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="210dp"
     app:cardCornerRadius="5dp"
-    android:elevation="10dp"
+    android:elevation="15dp"
     android:orientation="horizontal"
-    android:layout_margin="5dp" >
+    android:layout_margin="10dp"
+    >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,9 +19,9 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdv_categrid1"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="140dp"
                 fresco:actualImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/bg_big"
+                fresco:placeholderImage="@drawable/bg_big1"
                 />
 
             <TextView

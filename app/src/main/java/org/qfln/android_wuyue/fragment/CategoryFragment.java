@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -28,11 +30,13 @@ import java.util.List;
  * @备注：
  */
 public class CategoryFragment extends BaseFragment implements AdapterView.OnItemClickListener {
-
+    private TextView tvGridWz;
     private ListView mlv1;
     private GridView gv2;
+    private ImageView ivCate_search;
     private List<CategoryEntity.DataEntity.CategoriesEntity> categories;
     private List<CategoryEntity.DataEntity.CategoriesEntity.SubcategoriesEntity> subcategories;
+    private CategoryEntity.DataEntity data;
 
     @Override
     protected int getLayoutResId() {
@@ -46,6 +50,8 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     protected void init(View view) {
+        ivCate_search = (ImageView)view.findViewById(R.id.iv_cate_search);
+        tvGridWz = (TextView) view.findViewById(R.id.tv_gridwz);
         mlv1 = (ListView) view.findViewById(R.id.lv1);
         gv2 = (GridView) view.findViewById(R.id.gv2);
 
@@ -72,7 +78,7 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
             public void onResponse(String url, String response) {
                 if (response != null) {
                     CategoryEntity category = new Gson().fromJson(response.toString(), CategoryEntity.class);
-                    CategoryEntity.DataEntity data = category.getData();
+                    data = category.getData();
                     categories = data.getCategories();
                     CategoryAdapter1 categoryAdapter1=new CategoryAdapter1(getActivity());
                     categoryAdapter1.setDatas(categories);
@@ -96,6 +102,8 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mlv1.smoothScrollToPositionFromTop(position, 0);
         subcategories = categories.get(position).getSubcategories();
+        String name = categories.get(position).getName();
+        tvGridWz.setText(name);
         CategoryAdapter2 gvAdapter=new CategoryAdapter2(getActivity());
         gvAdapter.setDatas(subcategories);
         gv2.setAdapter(gvAdapter);

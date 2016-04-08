@@ -9,7 +9,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:gravity="center"
         android:padding="10dp"
-        android:background="#e6231b"
+        android:background="#e11d15"
         >
 
         <ImageView
@@ -50,7 +50,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                android:background="#ffffff"
+                android:background="#faf8f8"
                 app:layout_collapseMode="pin"
                 />
                 <LinearLayout
@@ -91,7 +91,12 @@
                             android:layout_marginTop="5dp"
                             android:textColor="#605f5f"
                             android:textSize="13sp" />
+
                     </LinearLayout>
+                    <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#88d9d5d5"/>
                     <android.support.design.widget.TabLayout
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
@@ -99,8 +104,11 @@
                         android:layout_gravity="bottom"
                         app:tabSelectedTextColor="#f25a5a"
                         app:tabTextColor="#252424"
-                        />
-
+                        android:fillViewport="false" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#88d9d5d5"/>
                 </LinearLayout>
 
             </android.support.design.widget.CollapsingToolbarLayout>

@@ -18,6 +18,7 @@ import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.bean.HomeVPGLEntity;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.L;
+import org.qfln.android_wuyue.util.ShareUtil;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
 import java.io.BufferedOutputStream;
@@ -32,11 +33,13 @@ import java.io.IOException;
  * @创建时间: 2016/3/29 19:16
  * @备注：
  */
-public class WebXQActivity extends BaseActivity {
+public class WebXQActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvXqlike, tvXqshare, tvXqcommit;
-    private ImageView ivXqlike;
+    private ImageView ivXqlike, ivXqshare, ivXqcommit;
     private WebView web;
     private File file;
+    private int item_id;
+    private String share_msg;
 
     @Override
     protected int getContentResId() {
@@ -49,8 +52,13 @@ public class WebXQActivity extends BaseActivity {
         tvXqlike = (TextView) findViewById(R.id.tv_xq_like);
         tvXqshare = (TextView) findViewById(R.id.tv_xq_share);
         tvXqcommit = (TextView) findViewById(R.id.tv_xq_commit);
+        ivXqshare = (ImageView) findViewById(R.id.iv_xq_share);
+        ivXqcommit = (ImageView) findViewById(R.id.iv_xq_commit);
         ivXqlike = (ImageView) findViewById(R.id.iv_xq_like);
-
+        //点击事件
+        ivXqcommit.setOnClickListener(this);
+        ivXqshare.setOnClickListener(this);
+        ivXqlike.setOnClickListener(this);
     }
 
     @Override
@@ -60,59 +68,63 @@ public class WebXQActivity extends BaseActivity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDefaultTextEncodingName("UTF-8");
-        final int item_id = intent.getIntExtra("item_id", 0);
+        item_id = intent.getIntExtra("item_id", 0);
+        share_msg = intent.getStringExtra("share_msg");
+
         String itemxq_url = String.format(Constant.URL.VPXQ_URL, item_id);
         VolleyUtil.requestString(itemxq_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                HomeVPGLEntity vpglEntity = new Gson().fromJson(response.toString(), HomeVPGLEntity.class);
-                HomeVPGLEntity.DataEntity data = vpglEntity.getData();
-                int comments_count = data.getComments_count();//评论数
-                int likes_count = data.getLikes_count();//likes数
-                L.d(""+likes_count);
-                int shares_count = data.getShares_count();//分享数
-                tvXqlike.setText(String.valueOf(likes_count));
-                tvXqshare.setText(String.valueOf(shares_count));
-                tvXqcommit.setText(String.valueOf(comments_count));
-                /**
-                 * 得到HTML字符串
-                 */
-                String content = data.getContent();
-                /**
-                 * 修改HTML中的内容 把request替换成" "
-                 */
-                String request = content.replace("request", " ");
-//              content.replace("http://www.liwushuo.com/items","http://api.liwushuo.com/v2/items");
-                //http://api.liwushuo.com/v2/items/1020470
-                //https://detail.tmall.com/item.htm?id=40042797269&ali_trackid=2:mm_56503797_8596089_29498842:1459864343_253_354461477
-                /**
-                 *先判断sd卡是否存在，再创建文件 将HTML写到sd中
-                 */
-                boolean sdCardExist = Environment.getExternalStorageState()
-                        .equals(android.os.Environment.MEDIA_MOUNTED);
-                if (sdCardExist) {
-                    file = new File("/sdcard/web.html");
-                    byte[] buffer = request.getBytes();
-                    BufferedOutputStream bos = null;
-                    try {
-                        bos = new BufferedOutputStream(new FileOutputStream(file));
-                        bos.write(buffer, 0, buffer.length);
-                        bos.flush();
-                    } catch (FileNotFoundException e) {
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
+                if (response != null) {
+                    HomeVPGLEntity vpglEntity = new Gson().fromJson(response.toString(), HomeVPGLEntity.class);
+                    HomeVPGLEntity.DataEntity data = vpglEntity.getData();
+                    int comments_count = data.getComments_count();//评论数
+                    int likes_count = data.getLikes_count();//likes数
+                    L.d("" + likes_count);
+                    int shares_count = data.getShares_count();//分享数
+                    tvXqlike.setText(String.valueOf(likes_count));
+                    tvXqshare.setText(String.valueOf(shares_count));
+                    tvXqcommit.setText(String.valueOf(comments_count));
+                    /**
+                     * 得到HTML字符串
+                     */
+                    String content = data.getContent();
+                    /**
+                     * 修改HTML中的内容 把request替换成" "
+                     */
+                    String request = content.replace("request", " ");
+//                  content.replace("http://www.liwushuo.com/items","http://api.liwushuo.com/v2/items");
+                    //http://api.liwushuo.com/v2/items/1020470
+                    //https://detail.tmall.com/item.htm?id=40042797269&ali_trackid=2:mm_56503797_8596089_29498842:1459864343_253_354461477
+                    /**
+                     *先判断sd卡是否存在，再创建文件 将HTML写到sd中
+                     */
+                    boolean sdCardExist = Environment.getExternalStorageState()
+                            .equals(android.os.Environment.MEDIA_MOUNTED);
+                    if (sdCardExist) {
+                        file = new File("/sdcard/web.html");
+                        byte[] buffer = request.getBytes();
+                        BufferedOutputStream bos = null;
                         try {
-                            bos.close();
+                            bos = new BufferedOutputStream(new FileOutputStream(file));
+                            bos.write(buffer, 0, buffer.length);
+                            bos.flush();
+                        } catch (FileNotFoundException e) {
                         } catch (IOException e) {
                             e.printStackTrace();
+                        } finally {
+                            try {
+                                bos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                    /**
-                     * webView与js交互
-                     */
-                    WebwithJs();
+                        /**
+                         * webView与js交互
+                         */
+                        WebwithJs();
 
+                    }
                 }
             }
 
@@ -156,5 +168,23 @@ public class WebXQActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    //tv ,iv 点击事件
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_xq_commit:
+                Intent intent = new Intent(this, CommitActivity.class);
+                intent.putExtra("commit_id", item_id);
+                startActivity(intent);
+                break;
+            case R.id.iv_xq_share:
+                String titleUrl=String.format("http://www.liwushuo.com/posts/%d",item_id);
+                ShareUtil.simpleShowShare(this,titleUrl,share_msg);
+                break;
+            case R.id.iv_xq_like:
+                break;
+        }
     }
 }

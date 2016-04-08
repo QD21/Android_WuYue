@@ -3,6 +3,7 @@ package org.qfln.android_wuyue.fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,8 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
     private static String mWay;
     private TextView tvTime;
     private TextView tvNewTime;
-
+    private int offset=10;
+    private ImageView ivNonet;
     @Override
     protected int getLayoutResId() {
         return R.layout.homeselect_layout;
@@ -68,6 +70,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
      */
     @Override
     protected void init(View view) {
+        ivNonet = (ImageView)view.findViewById(R.id.iv_nonet);
         HomeHeadVp headVp=new HomeHeadVp(getActivity());
         HomeHead2 homehead2=new HomeHead2(getActivity());
         homehead3 = LayoutInflater.from(getActivity()).inflate(R.layout.homehead3_layout, null);
@@ -81,8 +84,9 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
         tvTime = (TextView) homehead3.findViewById(R.id.tv_time);
         tvNewTime = (TextView) homehead3.findViewById(R.id.tv_newtime);
         pToRefreshListView.setOnRefreshListener(this);
-
         pToRefreshListView.setOnLastItemVisibleListener(this);
+        selectAdapter = new SelectAdapter(getContext());
+        lv.setAdapter(selectAdapter);// 设置适配器
     }
 
 
@@ -105,15 +109,14 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
                     data = selectEntity.getData();
                     List<SelectListEntity.DataEntity.ItemsEntity> items = data.getItems();
                     datas.addAll(items);
-                    selectAdapter = new SelectAdapter(getContext());
                     selectAdapter.setDatas(items);
-                    lv.setAdapter(selectAdapter);// 设置适配器
                 }
             }
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
+                ivNonet.setVisibility(View.VISIBLE);
+//                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
         String time_url=Constant.URL.TIME_URL;
@@ -154,7 +157,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-//                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -197,8 +200,8 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
      */
     @Override
     public void onLastItemVisible() {
-        SelectListEntity.DataEntity.PagingEntity paging = data.getPaging();
-        String next_url = paging.getNext_url();
+        offset +=10;
+        String next_url = String.format(Constant.URL.NEXT_UR,offset);
 
         VolleyUtil.requestString(next_url, new VolleyUtil.OnRequestListener() {
             @Override
