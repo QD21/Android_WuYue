@@ -1,6 +1,9 @@
 package org.qfln.android_wuyue.activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,8 +19,11 @@ import com.google.gson.Gson;
 import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.bean.HomeVPGLEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.util.Constant;
+import org.qfln.android_wuyue.util.DBUtil;
 import org.qfln.android_wuyue.util.L;
+import org.qfln.android_wuyue.util.SharePreferencesUtil;
 import org.qfln.android_wuyue.util.ShareUtil;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
@@ -40,6 +46,15 @@ public class WebXQActivity extends BaseActivity implements View.OnClickListener 
     private File file;
     private int item_id;
     private String share_msg;
+    private String gl_title;
+    //数据库
+    // 标记是否进行了收藏,不使用selector.
+    private boolean isCollected = false;
+    private DBUtil mDbUtil;
+    private SQLiteDatabase db;
+    private String image;
+    private String isCollect;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getContentResId() {
@@ -59,28 +74,38 @@ public class WebXQActivity extends BaseActivity implements View.OnClickListener 
         ivXqcommit.setOnClickListener(this);
         ivXqshare.setOnClickListener(this);
         ivXqlike.setOnClickListener(this);
+
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(this,"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
     }
 
     @Override
     protected void loadData() {
-        Intent intent = getIntent();
         WebSettings settings = web.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDefaultTextEncodingName("UTF-8");
+
+        Intent intent = getIntent();
         item_id = intent.getIntExtra("item_id", 0);
         share_msg = intent.getStringExtra("share_msg");
+        gl_title = intent.getStringExtra("gl_title");
+        image = intent.getStringExtra("image");
+        isCollect = intent.getStringExtra("isCollect");
+
 
         String itemxq_url = String.format(Constant.URL.VPXQ_URL, item_id);
         VolleyUtil.requestString(itemxq_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();
                 if (response != null) {
                     HomeVPGLEntity vpglEntity = new Gson().fromJson(response.toString(), HomeVPGLEntity.class);
                     HomeVPGLEntity.DataEntity data = vpglEntity.getData();
                     int comments_count = data.getComments_count();//评论数
                     int likes_count = data.getLikes_count();//likes数
-                    L.d("" + likes_count);
+//                    L.d("" + likes_count);
                     int shares_count = data.getShares_count();//分享数
                     tvXqlike.setText(String.valueOf(likes_count));
                     tvXqshare.setText(String.valueOf(shares_count));
@@ -133,6 +158,28 @@ public class WebXQActivity extends BaseActivity implements View.OnClickListener 
                 Toast.makeText(WebXQActivity.this, "数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //数据库
+        mDbUtil = new DBUtil(this);
+        db = mDbUtil.getDatabase();
+        // 查询数据库.展示收藏结果.
+        String sql = "select * from GL_Like where id=?";
+        Cursor cursor = db.rawQuery(sql, new String[] { String.valueOf(item_id) });
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                isCollect = cursor.getString(cursor
+                        .getColumnIndex("isCollect"));
+                L.i("isCollect=" + isCollect);
+                if ("true".equals(isCollect)) {
+                    ivXqlike.setImageResource(R.mipmap.ic_action_compact_favourite_selected);
+                } else {
+                    ivXqlike
+                            .setImageResource(R.mipmap.ic_action_compact_favourite_normal);
+                }
+            }
+        }
+
+
     }
 
     /**
@@ -184,6 +231,36 @@ public class WebXQActivity extends BaseActivity implements View.OnClickListener 
                 ShareUtil.simpleShowShare(this,titleUrl,share_msg);
                 break;
             case R.id.iv_xq_like:
+                isCollected = !isCollected;
+                if (isCollected) {// 收藏
+                    ivXqlike
+                            .setImageResource(R.mipmap.ic_action_compact_favourite_selected);
+
+                    // 数据库实现收藏
+                    ContentValues values = new ContentValues();
+
+                    values.put("id", String.valueOf(item_id));
+                    values.put("title", gl_title);
+                    values.put("icon",image);
+                    values.put("isCollect", "true");
+                    values.put("userid", SharePreferencesUtil.getString("userid"));
+                    long insert = db.insert("GL_Like", null, values);
+                    if (insert > 0) {
+                        Toast.makeText(this, "收藏成功",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {// 移除收藏
+                    ivXqlike
+                            .setImageResource(R.mipmap.ic_action_compact_favourite_normal);
+
+                    int delete = db.delete("GL_Like", "id=?",
+                            new String[] { String.valueOf(item_id) });
+                    if (delete > 0) {
+                        Toast.makeText(this, "取消收藏",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
                 break;
         }
     }

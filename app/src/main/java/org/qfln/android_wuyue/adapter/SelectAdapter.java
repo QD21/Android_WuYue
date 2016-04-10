@@ -39,10 +39,13 @@ public class SelectAdapter extends AbsBaseAdapter<SelectListEntity.DataEntity.It
             public void onClick(View v) {
                 ivNew.setVisibility(View.INVISIBLE);
                 int id = itemsEntity.getId();
+                String title = itemsEntity.getTitle();
                 String share_msg = itemsEntity.getShare_msg();
                 Intent intent=new Intent(context, WebXQActivity.class);
+                intent.putExtra("gl_title",title);
                 intent.putExtra("item_id",id);
                 intent.putExtra("share_msg",share_msg);
+                intent.putExtra("image",itemsEntity.getCover_image_url());
                 context.startActivity(intent);
             }
         });

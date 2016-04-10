@@ -18,9 +18,9 @@ import org.qfln.android_wuyue.R;
  */
 public class MyPullZoomLvAdapter extends BaseAdapter{
     private Context context;
-    String[] str=new String[]{"我的资料","我的礼物","我的攻略","完善资料"};
+    String[] str=new String[]{"我的资料","我的收藏","检查更新","清除缓存","关于物悦"};
     int[] bitmap=new int[]{R.mipmap.checkusertype_icon_identity,R.mipmap.ic_default_like_list
-    ,R.mipmap.ic_feed_favourite_selected,R.mipmap.ic_product_collection};
+    ,R.mipmap.ic_more_action_check_update,R.mipmap.ic_more_action_clean_cache,R.mipmap.ic_more_about};
     public MyPullZoomLvAdapter(Context context) {
         this.context=context;
     }

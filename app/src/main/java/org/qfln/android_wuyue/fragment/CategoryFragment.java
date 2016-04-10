@@ -18,6 +18,7 @@ import org.qfln.android_wuyue.adapter.CategoryAdapter1;
 import org.qfln.android_wuyue.adapter.CategoryAdapter2;
 import org.qfln.android_wuyue.base.BaseFragment;
 import org.qfln.android_wuyue.bean.CategoryEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
@@ -37,6 +38,7 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
     private List<CategoryEntity.DataEntity.CategoriesEntity> categories;
     private List<CategoryEntity.DataEntity.CategoriesEntity.SubcategoriesEntity> subcategories;
     private CategoryEntity.DataEntity data;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getLayoutResId() {
@@ -50,6 +52,10 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     protected void init(View view) {
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(getActivity(),"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
+
         ivCate_search = (ImageView)view.findViewById(R.id.iv_cate_search);
         tvGridWz = (TextView) view.findViewById(R.id.tv_gridwz);
         mlv1 = (ListView) view.findViewById(R.id.lv1);
@@ -76,6 +82,7 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
         VolleyUtil.requestString(category_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();
                 if (response != null) {
                     CategoryEntity category = new Gson().fromJson(response.toString(), CategoryEntity.class);
                     data = category.getData();

@@ -21,6 +21,7 @@ import org.qfln.android_wuyue.adapter.GridxqAdapter;
 import org.qfln.android_wuyue.adapter.PopLvAdapter;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.bean.Cate_GridEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
@@ -48,6 +49,7 @@ public class GridxqActivity extends BaseActivity implements AdapterView.OnItemCl
     private int offset=20;
     private int id1;
     private GridxqAdapter xqAdapter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getContentResId() {
@@ -56,6 +58,9 @@ public class GridxqActivity extends BaseActivity implements AdapterView.OnItemCl
 
     @Override
     protected void initView() {
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(this,"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
 
         mGv = (GridView) findViewById(R.id.gv_category);
         tvTitle = (TextView) findViewById(R.id.tv_cate_title);
@@ -113,6 +118,7 @@ public class GridxqActivity extends BaseActivity implements AdapterView.OnItemCl
         VolleyUtil.requestString(gridxq_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();
                 if(response!=null){
                     Cate_GridEntity gridEntity=new Gson().fromJson(response.toString(),Cate_GridEntity.class);
                     items = gridEntity.getData().getItems();

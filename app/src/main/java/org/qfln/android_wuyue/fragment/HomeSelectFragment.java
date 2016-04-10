@@ -3,7 +3,6 @@ package org.qfln.android_wuyue.fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,27 +36,28 @@ import java.util.TimeZone;
  * @创建时间: 2016/3/28 17:01
  * @备注：
  */
-public class HomeSelectFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener, PullToRefreshBase.OnLastItemVisibleListener{
+public class HomeSelectFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener, PullToRefreshBase.OnLastItemVisibleListener {
     private PullToRefreshListView pToRefreshListView;
     private ListView lv;
     private View homehead3;
     private SelectAdapter selectAdapter;
     private SelectListEntity.DataEntity data;
-    private List<SelectListEntity.DataEntity.ItemsEntity> datas=new ArrayList<>();
+    private List<SelectListEntity.DataEntity.ItemsEntity> datas = new ArrayList<>();
     private static String mYear;
     private static String mMonth;
     private static String mDay;
     private static String mWay;
     private TextView tvTime;
     private TextView tvNewTime;
-    private int offset=10;
-    private ImageView ivNonet;
+    private int offset = 10;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.homeselect_layout;
     }
-    public static HomeSelectFragment newInstance(String title){
-        HomeSelectFragment homeselectFragment=new HomeSelectFragment();
+
+    public static HomeSelectFragment newInstance(String title) {
+        HomeSelectFragment homeselectFragment = new HomeSelectFragment();
         Bundle args = new Bundle();
         args.putString("which", title);
         homeselectFragment.setArguments(args);
@@ -66,13 +66,13 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
     /**
      * 初始化view
+     *
      * @param view
      */
     @Override
     protected void init(View view) {
-        ivNonet = (ImageView)view.findViewById(R.id.iv_nonet);
-        HomeHeadVp headVp=new HomeHeadVp(getActivity());
-        HomeHead2 homehead2=new HomeHead2(getActivity());
+        HomeHeadVp headVp = new HomeHeadVp(getActivity());
+        HomeHead2 homehead2 = new HomeHead2(getActivity());
         homehead3 = LayoutInflater.from(getActivity()).inflate(R.layout.homehead3_layout, null);
         pToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.ptrflv);
         lv = pToRefreshListView.getRefreshableView();
@@ -83,6 +83,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
         tvTime = (TextView) homehead3.findViewById(R.id.tv_time);
         tvNewTime = (TextView) homehead3.findViewById(R.id.tv_newtime);
+
         pToRefreshListView.setOnRefreshListener(this);
         pToRefreshListView.setOnLastItemVisibleListener(this);
         selectAdapter = new SelectAdapter(getContext());
@@ -97,14 +98,13 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
     protected void loadData() {
         //得到首页listView的url
         String SELECT_LISTURL = String.format(Constant.URL.SELECT_LISTURL, 10);
-//        L.d("url="+SELECT_LISTURL);
         //进行Json下载
         VolleyUtil.requestString(SELECT_LISTURL, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                pToRefreshListView.onRefreshComplete();
-                Toast.makeText(getActivity(),"刷新完成",Toast.LENGTH_SHORT).show();
-                if(response!=null) {
+                pToRefreshListView.onRefreshComplete();//刷新完成
+                Toast.makeText(getActivity(), "刷新完成", Toast.LENGTH_SHORT).show();
+                if (response != null) {
                     SelectListEntity selectEntity = new Gson().fromJson(response.toString(), SelectListEntity.class);
                     data = selectEntity.getData();
                     List<SelectListEntity.DataEntity.ItemsEntity> items = data.getItems();
@@ -115,40 +115,42 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
 
             @Override
             public void onErrorResponse(String url, VolleyError error) {
-                ivNonet.setVisibility(View.VISIBLE);
-//                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
+                pToRefreshListView.setPullToRefreshEnabled(false);
+
+                Toast.makeText(getActivity(), "网络不给力，数据加载失败", Toast.LENGTH_SHORT).show();
+
             }
         });
-        String time_url=Constant.URL.TIME_URL;
+        String time_url = Constant.URL.TIME_URL;
         setTime();//设置当前年月日，星期
         VolleyUtil.requestString(time_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                if(response!=null){
-                    TimeEntity timeEntity=new Gson().fromJson(response.toString(),TimeEntity.class);
+                if (response != null) {
+                    TimeEntity timeEntity = new Gson().fromJson(response.toString(), TimeEntity.class);
                     TimeEntity.DataEntity data = timeEntity.getData();
                     TimeEntity.DataEntity.SchedulesEntity schedules = data.getSchedules();
                     List<String> post = schedules.getPost();
-                    SimpleDateFormat sdf=new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     String newtime = sdf.format(new Date());
-                    String[] time=newtime.split("\\:");
+                    String[] time = newtime.split("\\:");
                     int hour = Integer.valueOf(time[0]);
                     int minute = Integer.valueOf(time[1]);
-                    if(hour<8){
-                        if(minute<=59){
-                            tvNewTime.setText("下次更新"+post.get(0));
+                    if (hour < 8) {
+                        if (minute <= 59) {
+                            tvNewTime.setText("下次更新" + post.get(0));
                         }
-                    }else if(hour<=10){
-                        if(minute<30){
-                            tvNewTime.setText("下次更新"+post.get(1));
+                    } else if (hour <= 10) {
+                        if (minute < 30) {
+                            tvNewTime.setText("下次更新" + post.get(1));
                         }
-                    }else if(hour<12){
-                        if(minute<=59){
-                            tvNewTime.setText("下次更新"+post.get(2));
+                    } else if (hour < 12) {
+                        if (minute <= 59) {
+                            tvNewTime.setText("下次更新" + post.get(2));
                         }
-                    }else if(hour<16){
-                        if(minute<=59){
-                            tvNewTime.setText("下次更新"+post.get(3));
+                    } else if (hour < 16) {
+                        if (minute <= 59) {
+                            tvNewTime.setText("下次更新" + post.get(3));
                         }
                     }
 
@@ -169,22 +171,22 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
         mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
         mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
         mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
-        if("1".equals(mWay)){
-            mWay ="天";
-        }else if("2".equals(mWay)){
-            mWay ="一";
-        }else if("3".equals(mWay)){
-            mWay ="二";
-        }else if("4".equals(mWay)){
-            mWay ="三";
-        }else if("5".equals(mWay)){
-            mWay ="四";
-        }else if("6".equals(mWay)){
-            mWay ="五";
-        }else if("7".equals(mWay)){
-            mWay ="六";
+        if ("1".equals(mWay)) {
+            mWay = "天";
+        } else if ("2".equals(mWay)) {
+            mWay = "一";
+        } else if ("3".equals(mWay)) {
+            mWay = "二";
+        } else if ("4".equals(mWay)) {
+            mWay = "三";
+        } else if ("5".equals(mWay)) {
+            mWay = "四";
+        } else if ("6".equals(mWay)) {
+            mWay = "五";
+        } else if ("7".equals(mWay)) {
+            mWay = "六";
         }
-        tvTime.setText(mYear + "-" + mMonth + "-" + mDay+" "+"周"+mWay);
+        tvTime.setText(mYear + "-" + mMonth + "-" + mDay + " " + "周" + mWay);
     }
 
     /**
@@ -200,13 +202,13 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
      */
     @Override
     public void onLastItemVisible() {
-        offset +=10;
-        String next_url = String.format(Constant.URL.NEXT_UR,offset);
+        offset += 10;
+        String next_url = String.format(Constant.URL.NEXT_UR, offset);
 
         VolleyUtil.requestString(next_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                if(response!=null) {
+                if (response != null) {
                     SelectListEntity selectEntity = new Gson().fromJson(response.toString(), SelectListEntity.class);
                     final SelectListEntity.DataEntity data = selectEntity.getData();
                     List<SelectListEntity.DataEntity.ItemsEntity> items = data.getItems();
@@ -221,8 +223,6 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
             }
         });
     }
-
-
 
 
 }

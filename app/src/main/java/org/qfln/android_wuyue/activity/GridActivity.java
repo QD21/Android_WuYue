@@ -1,7 +1,10 @@
 package org.qfln.android_wuyue.activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,9 +30,13 @@ import com.google.gson.Gson;
 import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.bean.CateXQEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.fragment.CateCommitFragment;
 import org.qfln.android_wuyue.fragment.TuWenFragment;
 import org.qfln.android_wuyue.util.Constant;
+import org.qfln.android_wuyue.util.DBUtil;
+import org.qfln.android_wuyue.util.L;
+import org.qfln.android_wuyue.util.SharePreferencesUtil;
 import org.qfln.android_wuyue.util.ShareUtil;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
@@ -45,12 +52,19 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvCate_xqTitle,tvCate_xqprice,tvCate_xqContent;
     private TextView tvCate_xqQtb;
     private TabLayout tabLayout;
-    private ImageView ivxqBack,ivxqShare;
+    private ImageView ivxqBack,ivxqShare,ivCate_xplike;
     private ViewPager vpBottom;
     private ConvenientBanner convenientBanner;
     private VPBottomAdapter vpAdapter;
     private int grid_id;
     private CateXQEntity.DataEntity data;
+    private DBUtil mDbUtil;
+    private SQLiteDatabase db;
+    private String image;
+    private String isCollect;
+    private boolean isCollected=false;
+    private CustomProgressDialog progressDialog;
+
 
     @Override
     protected int getContentResId() {
@@ -60,10 +74,15 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initView() {
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(this,"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
+
         tvCate_xqTitle = (TextView) findViewById(R.id.tv_cate_xqtitle);
         tvCate_xqprice = (TextView) findViewById(R.id.tv_cate_xqprice);
         tvCate_xqContent = (TextView) findViewById(R.id.tv_cate_xqcontent);
         tvCate_xqQtb = (TextView) findViewById(R.id.tv_cate_xq_qtb);
+        ivCate_xplike = (ImageView) findViewById(R.id.iv_cate_xplike);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         //viewpager
@@ -82,6 +101,7 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
         ivxqShare = (ImageView) findViewById(R.id.iv_cata_xqshare);
         ivxqBack.setOnClickListener(this);
         ivxqShare.setOnClickListener(this);
+        ivCate_xplike.setOnClickListener(this);
 
     }
 
@@ -112,12 +132,13 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
         VolleyUtil.requestString(grid_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();
                 if (response!=null) {
                     CateXQEntity cateXQEntity = new Gson().fromJson(response.toString(), CateXQEntity.class);
                     data = cateXQEntity.getData();
                     setTextView(data);
                     List<String> image_urls = data.getImage_urls();
-                    bindConvenientBanner(image_urls);
+                    bindConvenientBanner(image_urls);//自动轮播Viewpager
 
                     vpAdapter = new VPBottomAdapter(getSupportFragmentManager(), data);
                     vpBottom.setAdapter(vpAdapter);
@@ -131,6 +152,28 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
                 Toast.makeText(GridActivity.this, "数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //数据库
+        mDbUtil = new DBUtil(this);
+        db = mDbUtil.getDatabase();
+        // 查询数据库.展示收藏结果.
+        String sql = "select * from gift_like where id=?";
+        Cursor cursor = db.rawQuery(sql, new String[] { String.valueOf(grid_id) });
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                isCollect = cursor.getString(cursor
+                        .getColumnIndex("isCollect"));
+                L.i("isCollect=" + isCollect);
+                if ("true".equals(isCollect)) {
+                    ivCate_xplike.setImageResource(R.mipmap.ic_action_compact_favourite_selected);
+                } else {
+                    ivCate_xplike.setImageResource(R.mipmap.ic_action_compact_favourite_normal);
+                }
+            }
+        }
+
+
+
     }
 
     private void setTextView(CateXQEntity.DataEntity data) {
@@ -220,6 +263,38 @@ public class GridActivity extends BaseActivity implements View.OnClickListener {
                 String name = data.getName();
                 String titleUrl=String.format("http://www.liwushuo.com/items/%d",grid_id);
                 ShareUtil.simpleShowShare(this,titleUrl,name);
+                break;
+            case R.id.iv_cate_xplike:
+                isCollected = !isCollected;
+                if (isCollected) {// 收藏
+                    ivCate_xplike
+                            .setImageResource(R.mipmap.ic_action_compact_favourite_selected);
+
+                    // 数据库实现收藏
+                    ContentValues values = new ContentValues();
+                    values.put("id", String.valueOf(grid_id));
+                    values.put("title", data.getName());
+                    values.put("icon",data.getCover_image_url());
+                    values.put("price",data.getPrice());
+                    values.put("isCollect", "true");
+                    values.put("userid", SharePreferencesUtil.getString("userid"));
+                    long insert = db.insert("gift_like", null, values);
+                    if (insert > 0) {
+                        Toast.makeText(this, "收藏成功",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {// 移除收藏
+                    ivCate_xplike
+                            .setImageResource(R.mipmap.ic_action_compact_favourite_normal);
+
+                    int delete = db.delete("gift_like", "id=?",
+                            new String[] { String.valueOf(grid_id) });
+                    if (delete > 0) {
+                        Toast.makeText(this, "取消收藏",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
                 break;
         }
     }

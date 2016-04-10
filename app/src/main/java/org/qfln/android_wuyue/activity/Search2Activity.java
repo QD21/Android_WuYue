@@ -21,7 +21,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.qfln.android_wuyue.R;
-import org.qfln.android_wuyue.adapter.KeyWordEntity;
+import org.qfln.android_wuyue.bean.KeyWordEntity;
 import org.qfln.android_wuyue.adapter.KeylistAdapter;
 import org.qfln.android_wuyue.adapter.PopLvAdapter;
 import org.qfln.android_wuyue.base.BaseActivity;

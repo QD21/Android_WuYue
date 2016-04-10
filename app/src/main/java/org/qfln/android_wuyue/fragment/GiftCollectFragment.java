@@ -4,9 +4,12 @@ import android.view.View;
 import android.widget.GridView;
 
 import org.qfln.android_wuyue.R;
-import org.qfln.android_wuyue.adapter.GridxqAdapter;
+import org.qfln.android_wuyue.adapter.CollGiftAdapter;
 import org.qfln.android_wuyue.base.BaseFragment;
-import org.qfln.android_wuyue.util.Constant;
+import org.qfln.android_wuyue.util.DBUtil;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @描述：
@@ -15,13 +18,16 @@ import org.qfln.android_wuyue.util.Constant;
  * @备注：
  */
 public class GiftCollectFragment extends BaseFragment{
-    private String url = Constant.URL.HOMEHEAD2_URL;
+
     private GridView gv;
-    private GridxqAdapter xqAdapter;
+    private CollGiftAdapter giftAdapter;
+    private List<Map<String,Object>> sqlList;
+    private DBUtil mUtil;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.collect_layout;
+        mUtil = new DBUtil(getActivity());
+        return R.layout.collect_gift_fragment;
     }
     public static GiftCollectFragment newInstance(){
         GiftCollectFragment giftCollectFragment=new GiftCollectFragment();
@@ -31,8 +37,11 @@ public class GiftCollectFragment extends BaseFragment{
     @Override
     protected void init(View view) {
         gv = (GridView) view.findViewById(R.id.gv_collect);
-        xqAdapter = new GridxqAdapter(getContext());
-        gv.setAdapter(xqAdapter);
+        String sql = "select * from gift_like";
+        sqlList = mUtil.queryList(sql, null);
+        giftAdapter = new CollGiftAdapter(getContext(),gv);
+        giftAdapter.addDatas(sqlList);
+        gv.setAdapter(giftAdapter);
     }
 
 

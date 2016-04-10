@@ -36,7 +36,13 @@ public class HomeContentAdapter extends AbsBaseAdapter<HomeContentEntity.DataEnt
             public void onClick(View v) {
                 Intent intent =new Intent(context, WebXQActivity.class);
                 intent.putExtra("item_id",itemsEntity.getId());
+                intent.putExtra("gl_title",itemsEntity.getTitle());
+                intent.putExtra("image",itemsEntity.getCover_image_url());
+                intent.putExtra("share_msg",itemsEntity.getShare_msg());
                 context.startActivity(intent);
+
+
+
             }
         });
 

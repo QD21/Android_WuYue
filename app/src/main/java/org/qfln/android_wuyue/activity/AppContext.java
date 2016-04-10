@@ -2,6 +2,7 @@ package org.qfln.android_wuyue.activity;
 
 import android.app.Application;
 
+import org.qfln.android_wuyue.util.SharePreferencesUtil;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
 /**
@@ -15,6 +16,7 @@ public class AppContext extends Application{
     public void onCreate() {
         super.onCreate();
         VolleyUtil.initVolley(this);
-//        ShareUtil.initShared(this);//初始化SharedPreferences
+        SharePreferencesUtil.initShared(this);//初始化SharedPreferences
+
     }
 }

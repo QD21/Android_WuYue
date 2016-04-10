@@ -16,6 +16,7 @@ import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.adapter.HomeContentAdapter;
 import org.qfln.android_wuyue.base.BaseFragment;
 import org.qfln.android_wuyue.bean.HomeContentEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshBase;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView;
 import org.qfln.android_wuyue.util.Constant;
@@ -41,6 +42,7 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
     private HomeContentAdapter contentAdapter;
     private int id;
     private int offset=10;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getLayoutResId() {
@@ -58,6 +60,10 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
 
     @Override
     protected void init(View view) {
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(getActivity(),"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
+        //底部动画
         footer = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_layout, null);
         ivRefresh = (ImageView) footer.findViewById(R.id.iv_third_bottom_refresh);
         footer.findViewById(R.id.ll_footer).setVisibility(View.GONE);
@@ -86,6 +92,7 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
         VolleyUtil.requestString(tabid_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();
                 pullToRefreshListView.onRefreshComplete();
                 Toast.makeText(getActivity(),"刷新完成",Toast.LENGTH_SHORT).show();
                 if(response!=null){

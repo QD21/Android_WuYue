@@ -9,10 +9,4 @@
         android:layout_height="match_parent"
         android:divider="@null" />
 
-    <ImageView
-        android:id="@+id/iv_nonet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/nonet"
-        android:visibility="gone" />
 </RelativeLayout>

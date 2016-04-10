@@ -13,6 +13,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.activity.GridActivity;
+import org.qfln.android_wuyue.bean.KeyWordEntity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,15 @@
 package org.qfln.android_wuyue.fragment;
 
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.qfln.android_wuyue.R;
+import org.qfln.android_wuyue.adapter.CollectGLAdapter;
 import org.qfln.android_wuyue.base.BaseFragment;
+import org.qfln.android_wuyue.util.DBUtil;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @描述：
@@ -17,9 +18,12 @@ import java.util.List;
  * @备注：
  */
 public class StrategyFragment extends BaseFragment{
-    private ListView mlv;
+    private ListView GL_mlv;
+    private List<Map<String,Object>> sqlList;
+    private DBUtil mUtil;
     @Override
     protected int getLayoutResId() {
+        mUtil = new DBUtil(getActivity());
         return R.layout.strategy_layout;
     }
     public static StrategyFragment newInstance(){
@@ -29,14 +33,15 @@ public class StrategyFragment extends BaseFragment{
 
     @Override
     protected void init(View view) {
-        mlv = (ListView)view. findViewById(R.id.lv_strategy);
-        List<String> list=new ArrayList<>();
-        for (int i = 0; i < 40; i++) {
-            list.add("kkkksj"+i);
-        }
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,list);
-        mlv.setAdapter(adapter);
+        GL_mlv = (ListView)view. findViewById(R.id.lv_strategy);
+        String sql = "select * from GL_Like";
+        sqlList = mUtil.queryList(sql, null);
+        CollectGLAdapter collectGLAdapter=new CollectGLAdapter(getActivity(),GL_mlv);
+        collectGLAdapter.addDatas(sqlList);
+        GL_mlv.setAdapter(collectGLAdapter);
+
 
     }
+
+
 }

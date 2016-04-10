@@ -19,6 +19,7 @@ import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.activity.SearchActivity;
 import org.qfln.android_wuyue.base.BaseFragment;
 import org.qfln.android_wuyue.bean.TabEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
@@ -40,6 +41,7 @@ public class HomeFragment extends BaseFragment {
     private List<String> tabName = new ArrayList<>();
     private List<Integer> tabId = new ArrayList<>();
     private ViewPagerAdapter vpAdapter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getLayoutResId() {
@@ -59,6 +61,9 @@ public class HomeFragment extends BaseFragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tab);
         mvp = (ViewPager) view.findViewById(R.id.vp);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(getActivity(),"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
 
     }
 
@@ -71,6 +76,7 @@ public class HomeFragment extends BaseFragment {
         VolleyUtil.requestString(tabUrl, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();//隐藏
                 if (response != null) {
                     TabEntity tabEntity = new Gson().fromJson(response.toString(), TabEntity.class);
                     TabEntity.DataEntity data = tabEntity.getData();

@@ -25,13 +25,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".activity.MainActivity" >
+        <activity android:name=".activity.WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.WelcomeActivity"/>
+        <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.HeadVpActivity"/>
         <activity android:name=".activity.WebXQActivity"/>
         <activity android:name=".activity.SearchActivity"/>
@@ -41,6 +41,11 @@
         <activity android:name=".activity.HeadTianActivity"/>
         <activity android:name=".activity.Search2Activity"/>
         <activity android:name=".activity.CommitActivity"/>
+        <activity android:name=".activity.CollectActivity"/>
+        <activity android:name=".activity.MyProfileActivity"/>
+        <activity android:name=".activity.WuYueActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
+
 
         <activity
             android:name="com.mob.tools.MobUIShell"

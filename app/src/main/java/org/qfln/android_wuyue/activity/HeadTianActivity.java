@@ -29,6 +29,7 @@ public class HeadTianActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initView() {
+
         iv_GJ_back= (ImageView) findViewById(R.id.iv_GJ_back);
         iv_GJ_share = (ImageView) findViewById(R.id.iv_GJ_share);
         iv_GJ_back.setOnClickListener(this);
@@ -37,6 +38,7 @@ public class HeadTianActivity extends BaseActivity implements View.OnClickListen
         mWeb = (WebView) findViewById(R.id.web_guajiang);
         WebSettings settings = mWeb.getSettings();
         settings.setDomStorageEnabled(true);
+
         mWeb.loadUrl(tian_url);
         mWeb.setWebViewClient(new WebViewClient(){
             @Override

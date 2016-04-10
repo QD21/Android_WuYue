@@ -117,14 +117,12 @@ public class PullToZoomListView extends ListView implements
 		this.mMaxScale = -1.0F;
 		this.mLastScale = -1.0F;
 	}
-//	public ImageView getHeaderViewcopy() {
-//		return this.mHeaderImage;
-//	}
+
 
 	public View getHeaderViewcopy() {
 		return this.view;
 	}
-	public ImageView getHeaderView() {
+	public ImageView getHeaderViewImg() {
 		return this.mHeaderImage;
 	}
 

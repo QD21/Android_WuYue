@@ -23,6 +23,11 @@ public abstract class BaseFragment extends Fragment {
         return inflater.inflate(getLayoutResId(),container,false);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     /**
      * 该方法会紧跟着onCreateView被调用  在此类中进行初始化，加载数据
      * @param view

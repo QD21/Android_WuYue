@@ -1,4 +1,4 @@
-package org.qfln.android_wuyue.adapter;
+package org.qfln.android_wuyue.bean;
 
 import java.util.List;
 

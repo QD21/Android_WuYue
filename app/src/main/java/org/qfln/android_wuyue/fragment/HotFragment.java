@@ -14,6 +14,7 @@ import org.qfln.android_wuyue.activity.SearchActivity;
 import org.qfln.android_wuyue.adapter.HotListAdapter;
 import org.qfln.android_wuyue.base.BaseFragment;
 import org.qfln.android_wuyue.bean.HotListEntity;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshBase;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView;
 import org.qfln.android_wuyue.util.Constant;
@@ -37,6 +38,7 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
     private HotListAdapter hotAdapter;
     private int offset=10;
     private ImageView iv_hot_search;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getLayoutResId() {
@@ -49,6 +51,10 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
 
     @Override
     protected void init(View view) {
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(getActivity(),"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
+
         iv_hot_search = (ImageView)view.findViewById(R.id.iv_hot_search);
         iv_hot_search.setOnClickListener(this);
         pullToRefreshList = (PullToRefreshListView)view.findViewById(R.id.hot_pull_lv);
@@ -67,6 +73,7 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
         VolleyUtil.requestString(hotlist_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
+                progressDialog.hide();
                 pullToRefreshList.onRefreshComplete();
                 Toast.makeText(getActivity(), "刷新完成", Toast.LENGTH_SHORT).show();
                 if(response!=null) {

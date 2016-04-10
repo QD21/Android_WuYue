@@ -111,7 +111,9 @@ public abstract class AbsBaseAdapter<T> extends BaseAdapter {
          */
         public ViewHolder bindSimpleImg(int id,String url){
             SimpleDraweeView simpleImageView = (SimpleDraweeView) this.getView(id);
-            simpleImageView.setImageURI(Uri.parse(url));
+            if(url!=null) {
+                simpleImageView.setImageURI(Uri.parse(url));
+            }
             return this;
         }
 

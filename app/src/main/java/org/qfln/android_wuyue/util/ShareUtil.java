@@ -12,14 +12,9 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  * @备注：
  */
 public class ShareUtil {
-//    private static SharedPreferences sp;
-//    private static SharedPreferences.Editor editor;
-
     public static void simpleShowShare(Context context, String TitleUrl,String Text){
         showShare(context,null,null,TitleUrl,Text,null);
     }
-
-
 
     public static void showShare(Context context, String weburl, String WeburlName, String TitleUrl, String Text, String Url) {
         ShareSDK.initSDK(context);

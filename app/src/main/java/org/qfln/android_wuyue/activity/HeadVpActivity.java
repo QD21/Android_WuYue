@@ -16,6 +16,7 @@ import org.qfln.android_wuyue.R;
 import org.qfln.android_wuyue.adapter.VpItemAdapter;
 import org.qfln.android_wuyue.base.BaseActivity;
 import org.qfln.android_wuyue.bean.HomeHeadVpItem;
+import org.qfln.android_wuyue.custom.CustomProgressDialog;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshBase;
 import org.qfln.android_wuyue.pulltorefresh.PullToRefreshListView;
 import org.qfln.android_wuyue.util.Constant;
@@ -39,6 +40,7 @@ public class HeadVpActivity extends BaseActivity implements View.OnClickListener
     private ImageView ivVpBack, ivVpShare;
     private String vpitem_title;
     private int id;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected int getContentResId() {
@@ -48,6 +50,9 @@ public class HeadVpActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initView() {
+        //在网络请求之前显示；
+        progressDialog = new CustomProgressDialog(this,"正在加载中...", R.drawable.donghua_frame);
+        progressDialog.show();
         ivVpBack = (ImageView) findViewById(R.id.iv_vp_back);
         ivVpShare = (ImageView) findViewById(R.id.iv_vp_share);
         ivVpBack.setOnClickListener(this);
@@ -62,6 +67,9 @@ public class HeadVpActivity extends BaseActivity implements View.OnClickListener
                 Intent intent = new Intent(HeadVpActivity.this, WebXQActivity.class);
                 // webview的url
                 intent.putExtra("item_id", posts.get(position).getId());
+                intent.putExtra("image",posts.get(position).getCover_image_url());
+                intent.putExtra("gl_title",posts.get(position).getTitle());
+                intent.putExtra("share_msg",posts.get(position).getShare_msg());
                 startActivity(intent);
             }
         });
@@ -87,7 +95,8 @@ public class HeadVpActivity extends BaseActivity implements View.OnClickListener
         VolleyUtil.requestString(VPITEM_URL1, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                pullToRefresh.onRefreshComplete();
+                progressDialog.hide();//隐藏
+                pullToRefresh.onRefreshComplete();//刷新完成
                 Toast.makeText(HeadVpActivity.this, "刷新完成", Toast.LENGTH_SHORT).show();
                 if (response != null) {
                     HomeHeadVpItem vpItem = new Gson().fromJson(response.toString(), HomeHeadVpItem.class);
