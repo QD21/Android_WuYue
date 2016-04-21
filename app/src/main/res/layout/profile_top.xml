@@ -16,12 +16,7 @@
         android:text="登录"
         android:background="@drawable/bg_stroke_white"/>
 
-    <ImageView
-        android:id="@+id/iv_my_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:src="@mipmap/icon_scan" />
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_my_logo"
         android:layout_width="80dp"

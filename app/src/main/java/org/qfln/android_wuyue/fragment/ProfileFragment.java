@@ -72,10 +72,8 @@ public class ProfileFragment extends BaseFragment implements AdapterView.OnItemC
         View headerView = pullZoom_lv.getHeaderViewcopy();
         tvlogin = (TextView) headerView.findViewById(R.id.tv_my_login);
         tvMyname = (TextView) headerView.findViewById(R.id.tv_my_name1);
-        ivScan = (ImageView) headerView.findViewById(R.id.iv_my_scan);
         sdvLogin = (SimpleDraweeView) headerView.findViewById(R.id.sdv_my_logo);
         sdvLogin.setOnClickListener(this);
-        ivScan.setOnClickListener(this);
         tvlogin.setOnClickListener(this);
 
         MyPullZoomLvAdapter pullAdapter = new MyPullZoomLvAdapter(getActivity());
@@ -158,9 +156,6 @@ public class ProfileFragment extends BaseFragment implements AdapterView.OnItemC
                     startActivityForResult(intent, CAMERA);
 
                 }
-                break;
-            case R.id.iv_my_scan:
-
                 break;
             case R.id.tv_my_login:
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

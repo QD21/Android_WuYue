@@ -130,7 +130,7 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
                     TimeEntity timeEntity = new Gson().fromJson(response.toString(), TimeEntity.class);
                     TimeEntity.DataEntity data = timeEntity.getData();
                     TimeEntity.DataEntity.SchedulesEntity schedules = data.getSchedules();
-                    List<String> post = schedules.getPost();
+                    List<String> post = schedules.getItem();
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     String newtime = sdf.format(new Date());
                     String[] time = newtime.split("\\:");
@@ -140,17 +140,14 @@ public class HomeSelectFragment extends BaseFragment implements PullToRefreshBas
                         if (minute <= 59) {
                             tvNewTime.setText("下次更新" + post.get(0));
                         }
-                    } else if (hour <= 10) {
-                        if (minute < 30) {
-                            tvNewTime.setText("下次更新" + post.get(1));
-                        }
+
                     } else if (hour < 12) {
                         if (minute <= 59) {
-                            tvNewTime.setText("下次更新" + post.get(2));
+                            tvNewTime.setText("下次更新" + post.get(1));
                         }
-                    } else if (hour < 16) {
+                    } else if (hour > 12&&hour<24) {
                         if (minute <= 59) {
-                            tvNewTime.setText("下次更新" + post.get(3));
+                            tvNewTime.setText("下次更新" + post.get(0));
                         }
                     }
 

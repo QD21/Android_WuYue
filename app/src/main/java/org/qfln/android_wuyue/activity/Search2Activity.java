@@ -2,9 +2,11 @@ package org.qfln.android_wuyue.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -21,10 +23,10 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.qfln.android_wuyue.R;
-import org.qfln.android_wuyue.bean.KeyWordEntity;
 import org.qfln.android_wuyue.adapter.KeylistAdapter;
 import org.qfln.android_wuyue.adapter.PopLvAdapter;
 import org.qfln.android_wuyue.base.BaseActivity;
+import org.qfln.android_wuyue.bean.KeyWordEntity;
 import org.qfln.android_wuyue.util.Constant;
 import org.qfln.android_wuyue.util.VolleyUtil;
 
@@ -57,6 +59,9 @@ public class Search2Activity extends BaseActivity implements View.OnClickListene
     private View popview;
     private PopLvAdapter popAdapter;
     private String next_url1;
+    private int screenWidth;
+    private int screenHeight;
+
 
     @Override
     protected int getContentResId() {
@@ -236,7 +241,22 @@ public class Search2Activity extends BaseActivity implements View.OnClickListene
         isLoading = false;
         this.footer.setVisibility(View.GONE);
     }
-
+    // 获取屏幕的宽度和高度
+    public void getWindowWidthAndHeight() {
+        // WindowManager:用来管理窗口信息的类
+        WindowManager manager = getWindowManager();
+        // 进行屏幕的测量
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        // getDefaultDisplay():获取屏幕默认的显示数据
+        // getMetrics:进行屏幕的测量
+        manager.getDefaultDisplay().getMetrics(outMetrics);
+        // 屏幕的宽度
+        screenWidth = outMetrics.widthPixels;
+//        L.e(""+screenWidth);
+        // 屏幕的高度
+        screenHeight = outMetrics.heightPixels;
+//        L.e("h"+screenHeight+"hh"+screenHeight/16*4+""+screenHeight/55);
+    }
 
     @Override
     public void onClick(View v) {
@@ -245,13 +265,14 @@ public class Search2Activity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.iv_word_paixu:
-                PopupWindow windows = new PopupWindow(popview, 250, 280);
+                getWindowWidthAndHeight();
+                PopupWindow windows = new PopupWindow(popview, screenWidth/8*3, screenHeight/36*8);
                 windows.setFocusable(true);
                 windows.setOutsideTouchable(true);
                 Drawable background = getResources().getDrawable(
                         R.drawable.abc_ab_soli);
                 windows.setBackgroundDrawable(background);
-                windows.showAsDropDown(iv_paixu, 0, 18);
+                windows.showAsDropDown(iv_paixu, 0, screenHeight/68);
 
                 break;
         }

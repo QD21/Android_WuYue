@@ -92,7 +92,7 @@ public class HomeContentFragment extends BaseFragment implements PullToRefreshBa
         VolleyUtil.requestString(tabid_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                progressDialog.hide();
+                progressDialog.dismiss();
                 pullToRefreshListView.onRefreshComplete();
                 Toast.makeText(getActivity(),"刷新完成",Toast.LENGTH_SHORT).show();
                 if(response!=null){

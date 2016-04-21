@@ -56,8 +56,8 @@ public class MyProfileActivity extends BaseActivity implements View.OnClickListe
             case R.id.iv_my_back:
                 finish();
                 break;
-            case R.id.iv_bianji:
-                break;
+//            case R.id.iv_bianji:
+//                break;
 
         }
     }

@@ -51,9 +51,11 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_category_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <ImageView
                     android:layout_width="0dp"

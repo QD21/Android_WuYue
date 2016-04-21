@@ -76,7 +76,7 @@ public class HomeFragment extends BaseFragment {
         VolleyUtil.requestString(tabUrl, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                progressDialog.hide();//隐藏
+                progressDialog.dismiss();//隐藏
                 if (response != null) {
                     TabEntity tabEntity = new Gson().fromJson(response.toString(), TabEntity.class);
                     TabEntity.DataEntity data = tabEntity.getData();

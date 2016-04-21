@@ -49,8 +49,8 @@
     android:textSize="13sp"
     android:padding="10dp"
     android:text="大家都在搜"/>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/relv_search"
+<org.qfln.android_wuyue.custom.XCFlowLayout
+    android:id="@+id/flowlayout"
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:background="#f9f6f6"/>

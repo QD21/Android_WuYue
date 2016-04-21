@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
     private List<CategoryEntity.DataEntity.CategoriesEntity.SubcategoriesEntity> subcategories;
     private CategoryEntity.DataEntity data;
     private CustomProgressDialog progressDialog;
+    private LinearLayout ll_category;
 
     @Override
     protected int getLayoutResId() {
@@ -60,6 +62,7 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
         tvGridWz = (TextView) view.findViewById(R.id.tv_gridwz);
         mlv1 = (ListView) view.findViewById(R.id.lv1);
         gv2 = (GridView) view.findViewById(R.id.gv2);
+        ll_category = (LinearLayout) view.findViewById(R.id.ll_category_iv);
 
         mlv1.setOnItemClickListener(this);
         //gridView 的点击事件
@@ -82,8 +85,9 @@ public class CategoryFragment extends BaseFragment implements AdapterView.OnItem
         VolleyUtil.requestString(category_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                progressDialog.hide();
+                progressDialog.dismiss();
                 if (response != null) {
+                    ll_category.setVisibility(View.VISIBLE);
                     CategoryEntity category = new Gson().fromJson(response.toString(), CategoryEntity.class);
                     data = category.getData();
                     categories = data.getCategories();

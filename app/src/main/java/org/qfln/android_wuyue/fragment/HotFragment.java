@@ -73,7 +73,7 @@ public class HotFragment extends BaseFragment implements PullToRefreshBase.OnLas
         VolleyUtil.requestString(hotlist_url, new VolleyUtil.OnRequestListener() {
             @Override
             public void onResponse(String url, String response) {
-                progressDialog.hide();
+                progressDialog.dismiss();
                 pullToRefreshList.onRefreshComplete();
                 Toast.makeText(getActivity(), "刷新完成", Toast.LENGTH_SHORT).show();
                 if(response!=null) {

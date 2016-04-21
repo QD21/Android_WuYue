@@ -41,9 +41,10 @@ public interface Constant {
         /**
          * 热门
          */
-
-        String HOTLIST_URL="http://api.liwushuo.com/v2/items?limit=%d&offset=0&gender=2&generation=1";
-        String HOTJIA_url="http://api.liwushuo.com/v2/items?generation=1&gender=2&limit=10&offset=%d";
+        //                  http://api.liwushuo.com/v2/items?limit=20&offset=0&gender=2&generation=2
+        String HOTLIST_URL="http://api.liwushuo.com/v2/items?limit=%d&offset=0&gender=2&generation=2";
+        //                  http://api.liwushuo.com/v2/items?generation=2&gender=2&limit=20&offset=20
+        String HOTJIA_url="http://api.liwushuo.com/v2/items?generation=2&gender=2&limit=10&offset=%d";
         /**
          * 分类
          */

@@ -24,7 +24,6 @@ public abstract class AbsRecyclerAdapter<T> extends RecyclerView.Adapter<AbsRecy
     private Context context;
     private List<T> datas;
     private int resid;
-
     private OnClickListener onClickListener;//点击事件监听
     private OnLongClickListener onLongClickListener;// 长按监听
 
